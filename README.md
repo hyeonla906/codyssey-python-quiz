@@ -1,4 +1,4 @@
-# 게임 상식 퀴즈
+# 게임 퀴즈
 
 Python 콘솔 퀴즈 게임. 평소 좋아하는 언차티드, 툼 레이더, 갓 오브 워 등을 주제로 선택.
 
@@ -74,7 +74,11 @@ python main.py
 
 **실습:** `git init`, `add`, `commit`, `checkout`, `merge`, `push`, `clone`, `pull`.
 
-**clone·pull:** 별도 폴더에 저장소 복제 → README 수정·commit·push → 원본 폴더에서 pull 확인.
+| 저장소 복제 | `git clone` 실행 확인 | <img src="docs/screenshots/git_clone.png" width="260"> |
+| 변경 내용 가져오기 | `git pull` 실행 확인 | <img src="docs/screenshots/git_pull.png" width="260"> |
+
+| Git clone 확인 | <img src="docs/screenshots/git_clone.png" width="260"> |
+| Git pull 확인 | <img src="docs/screenshots/git_pull.png" width="260"> |
 
 ## 5. 파일 구성
 
