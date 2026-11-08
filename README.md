@@ -77,3 +77,8 @@ clone과 pull을 이용한 복제 실습도 진행합니다.
 
 ## 10. 실행 결과
 스크린샷은 docs/screenshots 폴더에 저장합니다.
+
+## Git 복제 실습
+
+GitHub 저장소를 새로운 폴더에 clone했습니다.
+복제한 저장소에서 README를 수정하고 GitHub에 반영했습니다.
