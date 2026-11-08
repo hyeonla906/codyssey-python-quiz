@@ -1,4 +1,3 @@
-
 from quiz_game import QuizGame
 
 
@@ -37,30 +36,33 @@ def show_menu():
 def main():
     game = QuizGame()
 
-    while True:
-        show_menu()
-        choice = read_number("선택: ", 1, 5)
+    try:
+        while True:
+            show_menu()
+            choice = read_number("선택: ", 1, 5)
 
-        print(f"[확인] 입력된 번호: {choice}")
+            if choice == 1:
+                game.play(read_number)
 
-        if choice == 1:
-            game.play(read_number)
+            elif choice == 2:
+                game.add_quiz(read_number)
 
-        elif choice == 2:
-            game.add_quiz(read_number)
+            elif choice == 3:
+                game.show_list()
 
-        elif choice == 3:
-            print("[확인] 퀴즈 목록 기능 실행")
-            game.show_list()
-        elif choice == 4:
-            if game.best_score is None:
-                print("아직 퀴즈를 풀지 않았습니다.")
+            elif choice == 4:
+                if game.best_score is None:
+                    print("아직 퀴즈를 풀지 않았습니다.")
+                else:
+                    print(f"최고 점수: {game.best_score}점")
+
             else:
-                print(f"최고 점수: {game.best_score}점")
+                print("게임 종료")
+                break
 
-        else:
-            print("게임 종료")
-            break
+    finally:
+        # 정상 종료, Ctrl+C, EOF 입력 중단 시 가능한 데이터 저장
+        game.save_data()
 
 
 if __name__ == "__main__":
