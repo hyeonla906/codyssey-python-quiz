@@ -41,6 +41,8 @@ python main.py
 | 재실행 | 종료 후 데이터 유지 확인 | <a href="docs/screenshots/restart.png"><img src="docs/screenshots/restart.png" width="260"></a> |
 | 파일 오류 | JSON 손상 후 기본 퀴즈 복구 | <a href="docs/screenshots/json_recovery.png"><img src="docs/screenshots/json_recovery.png" width="260"></a> |
 
+| 안전 종료 | Ctrl+C 입력 시 저장 및 종료 확인 | <img src="docs/screenshots/safe_exit.png" width="260"> |
+
 **입력 처리:** 공백 제거·빈칸·문자·범위 밖 숫자 재입력. `Ctrl+C`, `EOFError` 발생 시 가능한 데이터 저장 후 종료.
 
 ## 3. JSON 저장
@@ -64,21 +66,19 @@ python main.py
 
 **확인:** `state.json`은 실행 시 생성. `.gitignore`로 Git 업로드 제외.
 
+
 ## 4. Git / GitHub
 
 | 확인 항목 | 실행 화면 |
 |---|---|
-| 커밋 10개 이상 | <a href="docs/screenshots/git_log.png"><img src="docs/screenshots/git_log.png" width="260"></a> |
-| `feature/play` 브랜치 병합 | <a href="docs/screenshots/git_merge.png"><img src="docs/screenshots/git_merge.png" width="260"></a> |
-| Git 사용자 설정 | <a href="docs/screenshots/git_config.png"><img src="docs/screenshots/git_config.png" width="260"></a> |
+| Git 커밋 기록 | <img src="docs/screenshots/git_log.png" width="260"> |
+| 기능 브랜치 병합 | <img src="docs/screenshots/git_merge.png" width="260"> |
+| Git 사용자 설정 | <img src="docs/screenshots/git_config.png" width="260"> |
+| 저장소 복제 | <img src="docs/screenshots/git_clone.png" width="260"> |
+| Git pull | <img src="docs/screenshots/git_pull.png" width="260"> |
 
 **실습:** `git init`, `add`, `commit`, `checkout`, `merge`, `push`, `clone`, `pull`.
 
-| 저장소 복제 | `git clone` 실행 확인 | <img src="docs/screenshots/git_clone.png" width="260"> |
-| 변경 내용 가져오기 | `git pull` 실행 확인 | <img src="docs/screenshots/git_pull.png" width="260"> |
-
-| Git clone 확인 | <img src="docs/screenshots/git_clone.png" width="260"> |
-| Git pull 확인 | <img src="docs/screenshots/git_pull.png" width="260"> |
 
 ## 5. 파일 구성
 
