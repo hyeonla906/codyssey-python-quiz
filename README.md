@@ -1,84 +1,82 @@
-
 # 게임 상식 퀴즈
 
-## 1. 프로젝트 개요
-Python으로 만든 간단한 콘솔 퀴즈 게임
+Python으로 만든 콘솔 퀴즈 게임. 언차티드, 툼 레이더, 갓 오브 워 등 익숙한 게임을 주제로 선택.
 
-메뉴에서 번호를 선택해 퀴즈를 풀거나
-새로운 문제를 추가할 수 있습니다.
+## 수행 체크리스트
 
-## 2. 퀴즈 주제 및 선정 이유
-주제: 액션 어드벤처 게임 상식
+- [x] 기본 퀴즈 5개, 메뉴 5개
+- [x] `Quiz`, `QuizGame` 클래스 사용
+- [x] 퀴즈 풀기·추가·목록·최고 점수·종료
+- [x] 빈칸·문자·범위 밖 숫자 입력 처리
+- [x] `state.json` 저장·불러오기, 파일 오류 처리
+- [x] Git 커밋 10개 이상, 브랜치 병합, clone·push·pull 실습
 
-평소 관심 있는 언차티드, 툼 레이더,
-갓 오브 워 등의 게임을 주제로 선택했습니다.
+## 1. 환경 및 실행
 
-익숙한 게임 내용을 활용해 Python의
-기본 문법을 연습하기 위해 만들었습니다.
+| 항목 | 내용 |
+|---|---|
+| 환경 | Windows / PowerShell / VS Code |
+| 언어 | Python 3.10 이상 / 표준 라이브러리 |
+| 버전 관리 | Git / GitHub |
 
-## 3. 개발 환경
-- Windows
-- Python 3.10 이상
-- Visual Studio Code
-- Git / GitHub
-- 외부 라이브러리 사용하지 않음
+```powershell
+git clone https://github.com/hyeonla906/codyssey-python-quiz.git
+cd codyssey-python-quiz
+python main.py
+```
 
-## 4. 실행 방법
-1. 프로젝트 폴더에서 터미널을 엽니다.
-2. 다음 명령어로 게임을 실행합니다.
+**메뉴:** `1` 퀴즈 풀기 / `2` 퀴즈 추가 / `3` 목록 / `4` 최고 점수 / `5` 종료.
 
-    python main.py
+## 2. 기능 및 실행 확인
 
-3. 메뉴에서 1~5번을 선택합니다.
+| 항목 | 확인 내용 | 실행 화면 |
+|---|---|---|
+| 퀴즈 추가 | 문제·선택지 4개·정답 번호 입력 | <a href="docs/screenshots/add_quiz.png"><img src="docs/screenshots/add_quiz.png" width="260"></a> |
+| 퀴즈 목록 | 기본 5문제 및 추가한 문제 확인 | <a href="docs/screenshots/list.png"><img src="docs/screenshots/list.png" width="260"></a> |
+| JSON 저장 | 퀴즈 추가 후 `state.json` 저장 | <a href="docs/screenshots/json_save.png"><img src="docs/screenshots/json_save.png" width="260"></a> |
+| 재실행·최고 점수 | 종료 후 다시 실행해 점수 유지 확인 | <a href="docs/screenshots/restart.png"><img src="docs/screenshots/restart.png" width="260"></a> |
+| JSON 오류 | 손상된 파일 처리, 기본 퀴즈 복구 확인 | <a href="docs/screenshots/json_recovery.png"><img src="docs/screenshots/json_recovery.png" width="260"></a> |
 
-## 5. 주요 기능
-- 1번: 퀴즈 풀기
-- 2번: 새로운 퀴즈 추가
-- 3번: 등록된 퀴즈 목록 확인
-- 4번: 최고 점수 확인
-- 5번: 게임 종료
+**입력 처리:** 공백·빈칸·문자·범위 밖 숫자는 다시 입력. `Ctrl+C`·`EOFError`는 종료 처리.
 
-## 6. 파일 구조
-- main.py : 프로그램 실행 및 메뉴
-- quiz.py : 개별 퀴즈를 관리하는 Quiz 클래스
-- quiz_game.py : 전체 게임을 관리하는 QuizGame 클래스
-- state.json : 퀴즈와 최고 점수 저장 파일
-- .gitignore : Git 제외 파일 설정
-- docs/screenshots : 실행 결과 스크린샷
+## 3. JSON 데이터
 
-## 7. 데이터 저장
-state.json 파일에 UTF-8 형식으로
-퀴즈 목록과 최고 점수를 저장합니다.
+`state.json`에 퀴즈와 최고 점수 저장. 파일이 없으면 기본 5문제 생성. 손상된 파일은 기본 데이터로 복구.
 
-저장되는 데이터:
-- quizzes : 퀴즈 목록
-- question : 문제 내용
-- choices : 선택지 4개
-- answer : 정답 번호 (1~4)
-- best_score : 최고 점수
+**저장 형식 예시:**
 
-state.json은 프로그램 실행 시 자동 생성되며
-Git에는 업로드하지 않습니다.
+```json
+{
+  "quizzes": [
+    {
+      "question": "언차티드 시리즈의 주인공은?",
+      "choices": ["네이선 드레이크", "조엘", "크레토스", "레온"],
+      "answer": 1
+    }
+  ],
+  "best_score": 100
+}
+```
 
-저장 파일이 없으면 기본 퀴즈를 사용하고,
-파일이 손상되면 기본 데이터로 복구합니다.
+`state.json`은 실행 중 생성되는 파일로 Git 업로드 제외.
 
-## 8. 예외 처리
-- 숫자가 아닌 입력 처리
-- 빈 입력 처리
-- 허용 범위를 벗어난 숫자 처리
-- Ctrl+C 및 EOFError 안전 종료
-- JSON 파일 읽기 및 쓰기 오류 처리
+## 4. Git / GitHub
 
-## 9. Git 작업
-기능 단위로 커밋을 작성했습니다.
-브랜치를 생성하고 main에 병합했습니다.
-clone과 pull을 이용한 복제 실습도 진행합니다.
+| 확인 항목 | 실행 화면 |
+|---|---|
+| Git 커밋 기록 | <a href="docs/screenshots/git_log.png"><img src="docs/screenshots/git_log.png" width="260"></a> |
+| 기능 브랜치 병합 | <a href="docs/screenshots/git_merge.png"><img src="docs/screenshots/git_merge.png" width="260"></a> |
+| Git 사용자 설정 | <a href="docs/screenshots/git_config.png"><img src="docs/screenshots/git_config.png" width="260"></a> |
 
-## 10. 실행 결과
-스크린샷은 docs/screenshots 폴더에 저장합니다.
+**실습:** `git init`, `add`, `commit`, `checkout`, `merge`, `push`, `clone`, `pull`.
 
-## Git 복제 실습
+## 5. 파일 구성
 
-GitHub 저장소를 새로운 폴더에 clone했습니다.
-복제한 저장소에서 README를 수정하고 GitHub에 반영했습니다.
+```text
+main.py                메뉴·입력 처리·실행
+quiz.py                Quiz 클래스
+quiz_game.py           QuizGame 클래스·JSON 저장
+state.json             실행 시 생성되는 저장 파일 (Git 제외)
+docs/screenshots/      실행 및 Git 증거 사진
+README.md              실습 정리
+```
