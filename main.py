@@ -21,6 +21,28 @@ def read_number(message, minimum, maximum):
 
         return number
 
+def read_answer(message):
+    while True:
+        text = input(message).strip().lower()
+
+        if text == "h":
+            return "h"
+
+        if text == "":
+            print("빈칸은 입력할 수 없습니다.")
+            continue
+
+        try:
+            number = int(text)
+        except ValueError:
+            print("1~4 또는 h를 입력하세요.")
+            continue
+
+        if number < 1 or number > 4:
+            print("1~4 사이의 숫자를 입력하세요.")
+            continue
+
+        return number
 
 def show_menu():
     print("\n==============================")
@@ -42,7 +64,7 @@ def main():
             choice = read_number("선택: ", 1, 5)
 
             if choice == 1:
-                game.play(read_number)
+                game.play(read_number, read_answer)
 
             elif choice == 2:
                 game.add_quiz(read_number)

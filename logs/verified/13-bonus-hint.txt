@@ -1,0 +1,51 @@
+﻿**********************
+Windows PowerShell 기록 시작
+시작 시간: 20261111132249
+사용자 이름: GNIA\dlals26842658053
+RunAs 사용자: GNIA\dlals26842658053
+구성 이름: 
+Machine: GNIA-C202-D06 (Microsoft Windows NT 10.0.26300.0)
+호스트 응용 프로그램: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -noexit -command try { . "c:\Program Files\Microsoft VS Code\dcd3ad6e36\resources\app\out\vs\workbench\contrib\terminal\common\scripts\shellIntegration.ps1" } catch {}
+프로세스 ID: 13268
+PSVersion: 5.1.26100.9711
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.9711
+BuildVersion: 10.0.26100.9711
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+기록이 시작되었습니다. 출력 파일은 .\logs\verified\13-bonus-hint.txt입니다.
+PS C:\Users\dlals26842658053\codyssey-python-quiz-bonus> py -m py_compile .\quiz.py
+Sorry: IndentationError: expected an indented block after function definition on line 3 (quiz.py,
+line 4)
+PS C:\Users\dlals26842658053\codyssey-python-quiz-bonus> py -m py_compile .\quiz.py
+
+PS C:\Users\dlals26842658053\codyssey-python-quiz-bonus> git diff -- quiz.py
+diff --git a/quiz.py b/quiz.py
+index 3f6d688..caec1b5 100644
+--- a/quiz.py
++++ b/quiz.py
+@@ -1,9 +1,10 @@
+
+ class Quiz:
+-    def __init__(self, question, choices, answer):
++    def __init__(self, question, choices, answer, hint=""):
+         self.question = question
+         self.choices = choices
+         self.answer = answer
++        self.hint = hint
+
+     def show(self):
+         print(self.question)
+PS C:\Users\dlals26842658053\codyssey-python-quiz-bonus> py -m py_compile .\quiz.py
+
+PS C:\Users\dlals26842658053\codyssey-python-quiz-bonus> py -m py_compile .\main.py
+
+PS C:\Users\dlals26842658053\codyssey-python-quiz-bonus> py -c "import main; print(callable(main.read_answer))"
+True
+PS C:\Users\dlals26842658053\codyssey-python-quiz-bonus> py -m py_compile .\quiz.py
+
+PS C:\Users\dlals26842658053\codyssey-python-quiz-bonus> py -m py_compile .\main.py .\quiz.py .\quiz_game.py
+

@@ -55,12 +55,13 @@ class QuizGame:
 
         input("\n목록을 확인했으면 Enter를 누르세요...")
 
-    def play(self, read_number):
+    def play(self, read_number, read_answer):
         if len(self.quizzes) == 0:
             print("퀴즈가 없습니다.")
             return
 
         correct = 0
+        hints_used = 0
 
         max_count = len(self.quizzes)
 
@@ -80,7 +81,26 @@ class QuizGame:
             print(f"\n[문제 {number}/{total}]")
             quiz.show()
 
-            answer = read_number("정답 (1~4): ", 1, 4)
+            used_hint = False
+
+            while True:
+                answer = read_answer("정답 (1~4, h=힌트): ")
+
+                if answer == "h":
+                    if not quiz.hint:
+                        print("이 문제에는 힌트가 없습니다.")
+                        continue
+
+                    if used_hint:
+                        print("이 문제에서는 이미 힌트를 사용했습니다.")
+                        continue
+
+                    print(f"힌트: {quiz.hint}")
+                    used_hint = True
+                    hints_used += 1
+                    continue
+
+                break
 
             if quiz.is_correct(answer):
                 print("정답입니다!")
@@ -88,7 +108,9 @@ class QuizGame:
             else:
                 print(f"오답! 정답은 {quiz.answer}번입니다.")
 
-        score = correct * 100 // total
+        score = max(0, correct * 100 // total - hints_used * 10)
+
+        print(f"힌트 사용: {hints_used}회 (회당 10점 감점)")
 
         print(f"\n최종 점수: {score}점")
         print(f"{total}문제 중 {correct}문제 정답")
@@ -125,7 +147,9 @@ class QuizGame:
 
         answer = read_number("정답 번호 (1~4): ", 1, 4)
 
-        new_quiz = Quiz(question, choices, answer)
+        hint = input("힌트 (없으면 Enter): ").strip()
+
+        new_quiz = Quiz(question, choices, answer, hint)
         self.quizzes.append(new_quiz)
 
         print("퀴즈가 추가되었습니다!")
@@ -137,7 +161,8 @@ class QuizGame:
                 {
                     "question": quiz.question,
                     "choices": quiz.choices,
-                    "answer": quiz.answer
+                    "answer": quiz.answer,
+                    "hint": quiz.hint
                 }
                 for quiz in self.quizzes
             ],
@@ -165,6 +190,7 @@ class QuizGame:
 
             for item in data["quizzes"]:
                 question = item["question"]
+                hint = item.get("hint", "")
                 choices = item["choices"]
                 answer = item["answer"]
 
@@ -180,7 +206,10 @@ class QuizGame:
                 if type(answer) is not int or not 1 <= answer <= 4:
                     raise ValueError("정답 번호가 잘못되었습니다.")
 
-                loaded_quizzes.append(Quiz(question, choices, answer))
+                if not isinstance(hint, str):
+                    raise ValueError("힌트 형식이 잘못되었습니다.")
+
+                loaded_quizzes.append(Quiz(question, choices, answer, hint))
 
             loaded_score = data["best_score"]
 
