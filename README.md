@@ -514,6 +514,21 @@ git remote -v
 
 - 복제 실습: 별도 폴더에서 README 수정 후 commit·push, 원래 폴더에서 pull로 반영 확인
 
+
+**추가 실습 증거 — checkout·clone·push·pull**
+
+| 브랜치 이동 | 복제 폴더에서 수정·업로드 | 원래 폴더에서 반영 확인 |
+|---|---|---|
+| <img src="docs/screenshots/git_checkout.png" width="240"> | <img src="docs/screenshots/git_clone_push.png" width="240"> | <img src="docs/screenshots/git_pull_verified.png" width="240"> |
+
+**실행 사진 — clone·pull**
+
+<p>
+  <img src="docs/screenshots/git_clone.png" width="260" alt="저장소 복제">
+  <img src="docs/screenshots/git_pull.png" width="260" alt="변경 내용 가져오기">
+</p>
+
+
 ## 8. 파일 구성
 
 ```text
