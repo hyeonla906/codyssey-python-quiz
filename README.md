@@ -90,3 +90,25 @@ state.json            실행 시 생성되는 저장 파일 (Git 제외)
 docs/screenshots/     실행 및 Git 증거 사진
 README.md             실습 정리
 ```
+
+
+
+## 보너스 기능 구현
+
+기본 퀴즈 게임에 다음 5가지 보너스 기능을 추가했습니다.
+
+| 보너스 기능 | 구현 내용 | 실행 증거 |
+|---|---|---|
+| 랜덤 출제 | `random.shuffle()`로 문제 순서를 무작위로 변경 | [실행 결과](docs/screenshots/bonus_count_result.png) |
+| 문제 수 선택 | 원하는 문제 수를 입력해 퀴즈 진행 | [문제 수 선택](docs/screenshots/bonus_count_select.png) |
+| 힌트 및 감점 | `h` 입력 시 힌트 출력, 사용 시 10점 감점 | [힌트 사용](docs/screenshots/bonus_hint_show.png) / [최종 점수](docs/screenshots/bonus_hint_score.png) |
+| 퀴즈 삭제 | 문제 번호 선택 후 확인을 거쳐 삭제하고 JSON에 저장 | [삭제 결과](docs/screenshots/bonus_delete_result.png) |
+| 플레이 기록 | 플레이 날짜·시간, 점수, 정답 수, 전체 문제 수, 힌트 사용 횟수를 JSON에 저장 | [기록 저장 결과](docs/screenshots/bonus_history_result.png) |
+
+### 구현 및 검증
+
+- 기존 퀴즈 게임의 기능을 유지하면서 보너스 기능을 추가했습니다.
+- 퀴즈 데이터와 플레이 기록은 `state.json`에 저장됩니다.
+- 실행 화면을 캡처하여 기능별 증거를 남겼습니다.
+- 보너스 기능은 `feature/bonus-quiz` 브랜치에서 작업했습니다.
+
