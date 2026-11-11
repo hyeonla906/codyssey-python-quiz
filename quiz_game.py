@@ -1,6 +1,7 @@
 
 import json
 import random
+from datetime import datetime
 from pathlib import Path
 from quiz import Quiz
 
@@ -38,6 +39,7 @@ class QuizGame:
         ]
 
         self.best_score = None
+        self.history = []
         self.load_data()
 
     def show_list(self):
@@ -119,6 +121,14 @@ class QuizGame:
             self.best_score = score
             print("새로운 최고 점수!")
 
+        self.history.append({
+            "played_at": datetime.now().astimezone().isoformat(timespec="seconds"),
+            "score": score,
+            "correct": correct,
+            "total": total,
+            "hints_used": hints_used
+        })
+
         self.save_data()
         input("결과를 확인했으면 Enter를 누르세요...")
 
@@ -196,7 +206,8 @@ class QuizGame:
                 }
                 for quiz in self.quizzes
             ],
-            "best_score": self.best_score
+            "best_score": self.best_score,
+            "history": self.history
         }
 
         try:
@@ -246,6 +257,12 @@ class QuizGame:
             if loaded_score is not None:
                 if type(loaded_score) is not int or not 0 <= loaded_score <= 100:
                     raise ValueError("점수 형식이 잘못되었습니다.")
+            loaded_history = data.get("history", [])
+
+            if not isinstance(loaded_history, list):
+                raise ValueError("퀴즈 기록 형식이 잘못되었습니다.")
+
+            self.history = loaded_history
 
             self.quizzes = loaded_quizzes
             self.best_score = loaded_score
