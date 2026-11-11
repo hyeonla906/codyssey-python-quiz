@@ -155,6 +155,36 @@ class QuizGame:
         print("퀴즈가 추가되었습니다!")
         self.save_data()
 
+    def delete_quiz(self, read_number):
+        if len(self.quizzes) == 0:
+            print("삭제할 퀴즈가 없습니다.")
+            return
+
+        print("\n삭제할 퀴즈 선택")
+
+        for number, quiz in enumerate(self.quizzes, start=1):
+            print(f"{number}. {quiz.question}")
+
+        number = read_number(
+            f"삭제할 번호 (1~{len(self.quizzes)}): ",
+            1,
+            len(self.quizzes)
+        )
+
+        selected_quiz = self.quizzes[number - 1]
+        print(f"선택한 문제: {selected_quiz.question}")
+
+        confirm = input("정말 삭제할까요? (y/n): ").strip().lower()
+
+        if confirm != "y":
+            print("삭제를 취소했습니다.")
+            return
+
+        self.quizzes.pop(number - 1)
+
+        print("퀴즈가 삭제되었습니다!")
+        self.save_data()
+
     def save_data(self):
         data = {
             "quizzes": [

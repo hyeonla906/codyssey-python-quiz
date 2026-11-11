@@ -52,7 +52,8 @@ def show_menu():
     print("2. 퀴즈 추가")
     print("3. 퀴즈 목록")
     print("4. 점수 확인")
-    print("5. 종료")
+    print("5. 퀴즈 삭제")
+    print("6. 종료")
 
 
 def main():
@@ -61,7 +62,7 @@ def main():
     try:
         while True:
             show_menu()
-            choice = read_number("선택: ", 1, 5)
+            choice = read_number("선택: ", 1, 6)
 
             if choice == 1:
                 game.play(read_number, read_answer)
@@ -77,6 +78,9 @@ def main():
                     print("아직 퀴즈를 풀지 않았습니다.")
                 else:
                     print(f"최고 점수: {game.best_score}점")
+            
+            elif choice == 5:
+                game.delete_quiz(read_number)
 
             else:
                 print("게임 종료")
