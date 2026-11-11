@@ -512,6 +512,8 @@ git remote -v
   <img src="docs/screenshots/git_pull.png" width="260" alt="Git pull">
 </p>
 
+- 복제 실습: 별도 폴더에서 README 수정 후 commit·push, 원래 폴더에서 pull로 반영 확인
+
 ## 8. 파일 구성
 
 ```text
