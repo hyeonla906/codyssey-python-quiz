@@ -1,5 +1,6 @@
 
 import json
+import random
 from pathlib import Path
 from quiz import Quiz
 
@@ -60,9 +61,22 @@ class QuizGame:
             return
 
         correct = 0
-        total = len(self.quizzes)
 
-        for number, quiz in enumerate(self.quizzes, start=1):
+        max_count = len(self.quizzes)
+
+        count = read_number(
+            f"몇 문제를 풀까요? (1~{max_count}): ",
+            1,
+            max_count
+        )
+
+        questions = self.quizzes.copy()
+        random.shuffle(questions)
+        questions = questions[:count]
+
+        total = len(questions)
+
+        for number, quiz in enumerate(questions, start=1):
             print(f"\n[문제 {number}/{total}]")
             quiz.show()
 
