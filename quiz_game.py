@@ -1,7 +1,4 @@
-
 import json
-import random
-from datetime import datetime
 from pathlib import Path
 from quiz import Quiz
 
@@ -39,7 +36,6 @@ class QuizGame:
         ]
 
         self.best_score = None
-        self.history = []
         self.load_data()
 
     def show_list(self):
@@ -57,52 +53,18 @@ class QuizGame:
 
         input("\n목록을 확인했으면 Enter를 누르세요...")
 
-    def play(self, read_number, read_answer):
+    def play(self, read_number):
         if len(self.quizzes) == 0:
             print("퀴즈가 없습니다.")
             return
 
         correct = 0
-        hints_used = 0
+        total = len(self.quizzes)
 
-        max_count = len(self.quizzes)
-
-        count = read_number(
-            f"몇 문제를 풀까요? (1~{max_count}): ",
-            1,
-            max_count
-        )
-
-        questions = self.quizzes.copy()
-        random.shuffle(questions)
-        questions = questions[:count]
-
-        total = len(questions)
-
-        for number, quiz in enumerate(questions, start=1):
+        for number, quiz in enumerate(self.quizzes, start=1):
             print(f"\n[문제 {number}/{total}]")
             quiz.show()
-
-            used_hint = False
-
-            while True:
-                answer = read_answer("정답 (1~4, h=힌트): ")
-
-                if answer == "h":
-                    if not quiz.hint:
-                        print("이 문제에는 힌트가 없습니다.")
-                        continue
-
-                    if used_hint:
-                        print("이 문제에서는 이미 힌트를 사용했습니다.")
-                        continue
-
-                    print(f"힌트: {quiz.hint}")
-                    used_hint = True
-                    hints_used += 1
-                    continue
-
-                break
+            answer = read_number("정답 (1~4): ", 1, 4)
 
             if quiz.is_correct(answer):
                 print("정답입니다!")
@@ -110,24 +72,13 @@ class QuizGame:
             else:
                 print(f"오답! 정답은 {quiz.answer}번입니다.")
 
-        score = max(0, correct * 100 // total - hints_used * 10)
-
-        print(f"힌트 사용: {hints_used}회 (회당 10점 감점)")
-
+        score = correct * 100 // total
         print(f"\n최종 점수: {score}점")
         print(f"{total}문제 중 {correct}문제 정답")
 
         if self.best_score is None or score > self.best_score:
             self.best_score = score
             print("새로운 최고 점수!")
-
-        self.history.append({
-            "played_at": datetime.now().astimezone().isoformat(timespec="seconds"),
-            "score": score,
-            "correct": correct,
-            "total": total,
-            "hints_used": hints_used
-        })
 
         self.save_data()
         input("결과를 확인했으면 Enter를 누르세요...")
@@ -157,42 +108,10 @@ class QuizGame:
 
         answer = read_number("정답 번호 (1~4): ", 1, 4)
 
-        hint = input("힌트 (없으면 Enter): ").strip()
-
-        new_quiz = Quiz(question, choices, answer, hint)
+        new_quiz = Quiz(question, choices, answer)
         self.quizzes.append(new_quiz)
 
         print("퀴즈가 추가되었습니다!")
-        self.save_data()
-
-    def delete_quiz(self, read_number):
-        if len(self.quizzes) == 0:
-            print("삭제할 퀴즈가 없습니다.")
-            return
-
-        print("\n삭제할 퀴즈 선택")
-
-        for number, quiz in enumerate(self.quizzes, start=1):
-            print(f"{number}. {quiz.question}")
-
-        number = read_number(
-            f"삭제할 번호 (1~{len(self.quizzes)}): ",
-            1,
-            len(self.quizzes)
-        )
-
-        selected_quiz = self.quizzes[number - 1]
-        print(f"선택한 문제: {selected_quiz.question}")
-
-        confirm = input("정말 삭제할까요? (y/n): ").strip().lower()
-
-        if confirm != "y":
-            print("삭제를 취소했습니다.")
-            return
-
-        self.quizzes.pop(number - 1)
-
-        print("퀴즈가 삭제되었습니다!")
         self.save_data()
 
     def save_data(self):
@@ -201,13 +120,11 @@ class QuizGame:
                 {
                     "question": quiz.question,
                     "choices": quiz.choices,
-                    "answer": quiz.answer,
-                    "hint": quiz.hint
+                    "answer": quiz.answer
                 }
                 for quiz in self.quizzes
             ],
-            "best_score": self.best_score,
-            "history": self.history
+            "best_score": self.best_score
         }
 
         try:
@@ -231,7 +148,6 @@ class QuizGame:
 
             for item in data["quizzes"]:
                 question = item["question"]
-                hint = item.get("hint", "")
                 choices = item["choices"]
                 answer = item["answer"]
 
@@ -247,22 +163,13 @@ class QuizGame:
                 if type(answer) is not int or not 1 <= answer <= 4:
                     raise ValueError("정답 번호가 잘못되었습니다.")
 
-                if not isinstance(hint, str):
-                    raise ValueError("힌트 형식이 잘못되었습니다.")
-
-                loaded_quizzes.append(Quiz(question, choices, answer, hint))
+                loaded_quizzes.append(Quiz(question, choices, answer))
 
             loaded_score = data["best_score"]
 
             if loaded_score is not None:
                 if type(loaded_score) is not int or not 0 <= loaded_score <= 100:
                     raise ValueError("점수 형식이 잘못되었습니다.")
-            loaded_history = data.get("history", [])
-
-            if not isinstance(loaded_history, list):
-                raise ValueError("퀴즈 기록 형식이 잘못되었습니다.")
-
-            self.history = loaded_history
 
             self.quizzes = loaded_quizzes
             self.best_score = loaded_score
@@ -277,3 +184,4 @@ class QuizGame:
             print(f"파일 읽기 오류: {error}")
             print("기본 퀴즈 5개로 복구합니다.")
             self.save_data()
+

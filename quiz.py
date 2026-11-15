@@ -1,10 +1,8 @@
-
 class Quiz:
-    def __init__(self, question, choices, answer, hint=""):
+    def __init__(self, question, choices, answer):
         self.question = question
         self.choices = choices
         self.answer = answer
-        self.hint = hint
 
     def show(self):
         print(self.question)
@@ -14,3 +12,4 @@ class Quiz:
 
     def is_correct(self, choice):
         return choice == self.answer
+

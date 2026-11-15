@@ -21,29 +21,6 @@ def read_number(message, minimum, maximum):
 
         return number
 
-def read_answer(message):
-    while True:
-        text = input(message).strip().lower()
-
-        if text == "h":
-            return "h"
-
-        if text == "":
-            print("빈칸은 입력할 수 없습니다.")
-            continue
-
-        try:
-            number = int(text)
-        except ValueError:
-            print("1~4 또는 h를 입력하세요.")
-            continue
-
-        if number < 1 or number > 4:
-            print("1~4 사이의 숫자를 입력하세요.")
-            continue
-
-        return number
-
 def show_menu():
     print("\n==============================")
     print("        게임 상식 퀴즈")
@@ -52,8 +29,7 @@ def show_menu():
     print("2. 퀴즈 추가")
     print("3. 퀴즈 목록")
     print("4. 점수 확인")
-    print("5. 퀴즈 삭제")
-    print("6. 종료")
+    print("5. 종료")
 
 
 def main():
@@ -62,10 +38,10 @@ def main():
     try:
         while True:
             show_menu()
-            choice = read_number("선택: ", 1, 6)
+            choice = read_number("선택: ", 1, 5)
 
             if choice == 1:
-                game.play(read_number, read_answer)
+                game.play(read_number)
 
             elif choice == 2:
                 game.add_quiz(read_number)
@@ -79,8 +55,6 @@ def main():
                 else:
                     print(f"최고 점수: {game.best_score}점")
             
-            elif choice == 5:
-                game.delete_quiz(read_number)
 
             else:
                 print("게임 종료")
@@ -96,3 +70,4 @@ if __name__ == "__main__":
         main()
     except (KeyboardInterrupt, EOFError):
         print("\n입력이 중단되어 안전하게 종료합니다.")
+
