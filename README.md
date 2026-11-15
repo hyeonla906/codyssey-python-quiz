@@ -6,6 +6,8 @@ Python으로 만든 터미널 퀴즈 게임. 문제를 풀고 추가하거나, �
 - **선정 이유:** 익숙한 게임 문제를 사용해 Python 기본 문법과 프로그램 흐름 학습에 집중
 - **구현:** 기본 기능 5개(퀴즈 풀기·추가·목록·점수 확인·종료), 보너스 5개
 
+익숙한 게임을 주제로 터미널 퀴즈 제작. 메뉴에서 퀴즈 풀기·추가·목록·점수 확인 가능. 결과는 파일에 저장해 재실행 시에도 유지.
+
 ## 수행 체크리스트
 
 | 수행 항목 | 확인 | 바로가기 |
@@ -49,6 +51,8 @@ py -m py_compile .\main.py .\quiz.py .\quiz_game.py
 
 - `py --version`: Python 버전 확인 / `py -m py_compile`: 코드 문법 검사 (오류 없으면 출력 없음)
 
+Windows·VS Code에서 코드 작성, PowerShell에서 `py main.py`로 게임 실행. Python 표준 라이브러리 사용.
+
 <p><a href="docs/screenshots/environment.png"><img src="docs/screenshots/environment.png" width="680" alt="Python과 Git 환경 확인"></a></p>
 
 ## 2. 파일 구조와 역할
@@ -61,6 +65,8 @@ py -m py_compile .\main.py .\quiz.py .\quiz_game.py
 | `state.json` | 실행 시 생성되는 퀴즈·점수·플레이 기록 (`.gitignore`로 업로드 제외) |
 
 **구조:** `Quiz`는 문제 한 개, `QuizGame`은 여러 문제와 게임 진행 담당. `main.py`에서 메뉴 선택 후 해당 기능 실행. 아래 파란색 코드 링크를 누르면 GitHub의 실제 코드 줄로 이동.
+
+`Quiz`: 문제 하나의 내용·보기·정답 관리 및 정답 확인. `QuizGame`: 여러 문제와 게임 진행 관리. `main.py`: 메뉴 선택과 기능 연결. 클래스별 역할 분리.
 
 **퀴즈 제작 과정**
 
@@ -90,21 +96,29 @@ py -m py_compile .\main.py .\quiz.py .\quiz_game.py
 
 **점수 계산:** [계산 코드](quiz_game.py#L113-L121)에서 정답 비율을 점수로 바꾼 뒤 힌트 1회당 10점 감점. `max(0, ...)`으로 최저 0점 유지.
 
+`play()`로 문제 출제, `Quiz.is_correct()`로 선택 번호와 정답 비교. 맞힌 개수로 점수 계산, 힌트 1회당 10점 감점.
+
 ### 3-2. 퀴즈 추가
 
 [add_quiz() 코드](quiz_game.py#L135-L167) → 문제 입력 → 보기 4개 입력 → 정답 번호 입력 → 새 `Quiz` 생성 → JSON 저장
 
 <p><a href="docs/screenshots/add_quiz.png"><img src="docs/screenshots/add_quiz.png" width="720" alt="퀴즈 추가 실행 결과"></a></p>
+
+문제·보기 4개·정답 번호 입력 → 새 `Quiz` 객체 생성 → 목록 추가 → JSON 파일 저장.
 ### 3-3. 퀴즈 목록
 
 [show_list() 코드](quiz_game.py#L45-L59) → `for` 반복문으로 문제 번호와 제목 출력. 등록된 문제가 없을 때도 안내.
 
 <p><a href="docs/screenshots/list.png"><img src="docs/screenshots/list.png" width="720" alt="퀴즈 목록 출력"></a></p>
+
+`for`로 저장된 문제를 차례로 확인해 번호와 제목 출력. 등록된 문제가 없으면 안내.
 ### 3-4. 최고 점수 확인
 
 [최고 점수 비교](quiz_game.py#L113-L121) → 기존 점수보다 높으면 갱신 → [메뉴 4번](main.py#L76-L82)에서 출력
 
 <p><a href="docs/screenshots/score.png"><img src="docs/screenshots/score.png" width="700" alt="최고 점수 확인"></a></p>
+
+이번 점수가 기존 최고 점수보다 높으면 최고 점수 갱신. 메뉴 4번에서 확인.
 ## 4. 입력 오류 및 안전 종료
 
 | 입력 상황 | 처리 |
@@ -117,6 +131,8 @@ py -m py_compile .\main.py .\quiz.py .\quiz_game.py
 숫자 입력은 [read_number()](main.py#L4-L23), 정답·힌트 입력은 [read_answer()](main.py#L24-L45)에서 확인. [종료 처리](main.py#L59-L98)에서 데이터 저장.
 
 <p><a href="docs/screenshots/safe_exit.png"><img src="docs/screenshots/safe_exit.png" width="680" alt="Ctrl+C 입력 시 안전 종료 확인"></a></p>
+
+빈칸·문자·범위 밖 입력 시 안내 후 `while`로 재입력. 숫자 변환 오류는 `try/except`로 처리. 입력 중단 시 가능한 데이터 저장 후 안전 종료.
 
 ## 5. JSON 저장 및 복구
 
@@ -156,6 +172,8 @@ py -m py_compile .\main.py .\quiz.py .\quiz_game.py
 JSON 파일에 실제 저장된 내용:
 
 <p><a href="docs/screenshots/json_save.png"><img src="docs/screenshots/json_save.png" width="700" alt="JSON 저장 확인"></a></p>
+
+`json.dump()`로 퀴즈·점수·기록 저장, `json.load()`로 재실행 시 불러오기. 저장 파일이 없거나 손상되면 기본 문제로 시작·복구.
 ## 6. 보너스 기능
 
 ### 6-1. 랜덤 출제
@@ -191,6 +209,8 @@ JSON 파일에 실제 저장된 내용:
 
 <p><a href="docs/screenshots/bonus_history_result.png"><img src="docs/screenshots/bonus_history_result.png" width="700" alt="JSON의 플레이 기록 확인"></a></p>
 힌트는 문제를 추가할 때 입력한 경우 사용할 수 있음. `history`는 별도 메뉴 없이 `state.json`에서 확인.
+
+랜덤 출제·문제 수 선택·힌트 감점·퀴즈 삭제·플레이 기록 저장 기능 추가.
 
 ## 7. Git / GitHub 실습
 
@@ -231,6 +251,8 @@ JSON 파일에 실제 저장된 내용:
 
 <p><a href="docs/screenshots/git_clone.png"><img src="docs/screenshots/git_clone.png" width="730" alt="git clone 실행 결과"></a></p>
 **Git 기록 확인:** `git status` / `git branch --show-current` / `git log --oneline --graph --all` / `git remote -v`
+
+Git으로 기능별 변경 기록, 별도 브랜치 작업 후 `main` 병합. `clone`으로 복제해 수정·업로드한 뒤 원래 폴더에서 `pull`로 반영 확인.
 
 ## 8. 프로젝트 파일 구성
 
